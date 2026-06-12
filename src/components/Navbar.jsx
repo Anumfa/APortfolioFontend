@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 
 const navLinks = [
   { to: '/about', label: 'About' },
@@ -12,50 +13,80 @@ const navLinks = [
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => { setOpen(false); }, [location.pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
+
   return (
-    <nav style={{
-      position: 'fixed',
-      top: 0,
-      width: '100%',
-      padding: scrolled ? '1rem 0' : '1.5rem 0',
-      background: scrolled ? 'rgba(11, 12, 16, 0.9)' : 'transparent',
-      backdropFilter: scrolled ? 'blur(10px)' : 'none',
-      boxShadow: scrolled ? '0 2px 10px rgba(0,0,0,0.3)' : 'none',
-      transition: 'all 0.3s ease',
-      zIndex: 1000
-    }}>
-      <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Link to="/" style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--primary-color)', textDecoration: 'none' }}>
-          A<span style={{ color: 'var(--text-light)' }}>K</span>
-        </Link>
-        
-        <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-          {navLinks.map(({ to, label }) => (
-            <Link key={to} to={to} className="nav-link">{label}</Link>
-          ))}
+    <>
+      <nav className={`navbar${scrolled ? ' scrolled' : ''}`}>
+        <div className="container navbar-inner">
+          <Link to="/" className="navbar-logo">
+            A<span>K</span>
+          </Link>
+
+          <div className="nav-desktop">
+            {navLinks.map(({ to, label }) => (
+              <Link key={to} to={to} className="nav-link">{label}</Link>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            className="nav-mobile-toggle"
+            onClick={() => setOpen(true)}
+            aria-label="Open menu"
+          >
+            <Menu size={26} />
+          </button>
         </div>
-      </div>
-      <style>{`
-        .nav-link {
-          color: var(--text-main);
-          font-weight: 500;
-          transition: color 0.3s;
-          text-decoration: none;
-        }
-        .nav-link:hover {
-          color: var(--primary-color);
-        }
-      `}</style>
-    </nav>
+      </nav>
+
+      <div
+        className={`nav-sidebar-overlay${open ? ' open' : ''}`}
+        onClick={() => setOpen(false)}
+        aria-hidden={!open}
+      />
+
+      <aside className={`nav-sidebar${open ? ' open' : ''}`} aria-hidden={!open}>
+        <div className="nav-sidebar-header">
+          <span className="nav-sidebar-title">Menu</span>
+          <button
+            type="button"
+            className="nav-sidebar-close"
+            onClick={() => setOpen(false)}
+            aria-label="Close menu"
+          >
+            <X size={24} />
+          </button>
+        </div>
+
+        <nav className="nav-sidebar-links">
+          {navLinks.map(({ to, label }) => (
+            <Link
+              key={to}
+              to={to}
+              className={`nav-sidebar-link${location.pathname === to ? ' active' : ''}`}
+              onClick={() => setOpen(false)}
+            >
+              {label}
+            </Link>
+          ))}
+        </nav>
+      </aside>
+    </>
   );
 };
 

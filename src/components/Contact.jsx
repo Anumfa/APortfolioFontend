@@ -2,6 +2,16 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import API_BASE_URL from '../config/api';
+import PremiumSection from './ui/PremiumSection';
+import SectionTitle from './ui/SectionTitle';
+import PremiumButton from './ui/PremiumButton';
+
+const inputClasses = `
+  w-full rounded-xl border border-[#1f1f1f] bg-[#0a0a0a] px-4 py-3
+  text-sm text-white placeholder-[#555555] outline-none
+  transition-all duration-300
+  focus:border-[#d4ff00]/50 focus:ring-1 focus:ring-[#d4ff00]/20
+`;
 
 const Contact = ({ isFormOnly = false }) => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -18,85 +28,44 @@ const Contact = ({ isFormOnly = false }) => {
       await axios.post(`${API_BASE_URL}/api/contact`, formData);
       setStatus('Message sent successfully!');
       setFormData({ name: '', email: '', message: '' });
-    } catch (err) {
+    } catch {
       setStatus('Failed to send message. Please try again.');
     }
   };
 
   const formContent = (
-    <motion.form 
+    <motion.form
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
       viewport={{ once: true }}
-      onSubmit={handleSubmit} 
-      className={isFormOnly ? "" : "glass-panel"}
-      style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-4"
     >
-      <input 
-        type="text" 
-        name="name" 
-        placeholder="Your Name" 
-        value={formData.name} 
-        onChange={handleChange}
-        required
-        style={inputStyle}
-      />
-      <input 
-        type="email" 
-        name="email" 
-        placeholder="Your Email" 
-        value={formData.email} 
-        onChange={handleChange}
-        required
-        style={inputStyle}
-      />
-      <textarea 
-        name="message" 
-        placeholder="Your Message" 
-        value={formData.message} 
-        onChange={handleChange}
-        required
-        rows="5"
-        style={{ ...inputStyle, resize: 'vertical' }}
-      ></textarea>
-      <button type="submit" className="btn-primary btn-solid" style={{ alignSelf: 'center', marginTop: '1rem' }}>
-        Send Message
-      </button>
-      {status && <p style={{ textAlign: 'center', color: 'var(--primary-color)', marginTop: '1rem' }}>{status}</p>}
+      <input type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} required className={inputClasses} />
+      <input type="email" name="email" placeholder="Your Email" value={formData.email} onChange={handleChange} required className={inputClasses} />
+      <textarea name="message" placeholder="Your Message" value={formData.message} onChange={handleChange} required rows="5" className={`${inputClasses} resize-y`} />
+      <div className="pt-2">
+        <PremiumButton type="submit" variant="solid">Send Message</PremiumButton>
+      </div>
+      {status && (
+        <p className={`text-center text-sm ${status.includes('success') ? 'text-[#d4ff00]' : status === 'Sending...' ? 'text-[#888888]' : 'text-red-400'}`}>
+          {status}
+        </p>
+      )}
     </motion.form>
   );
 
   if (isFormOnly) return formContent;
 
   return (
-    <section id="contact" className="section">
-      <div className="container" style={{ maxWidth: '600px' }}>
-        <h2 className="section-title">Get In Touch</h2>
-        <motion.p 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          style={{ textAlign: 'center', marginBottom: '2rem' }}
-        >
-          Available for Internships & Entry-Level Roles. My inbox is always open.
-        </motion.p>
-        {formContent}
-      </div>
-    </section>
+    <PremiumSection id="contact">
+      <SectionTitle subtitle="Reach Out">Get In Touch</SectionTitle>
+      <p className="premium-body mx-auto mb-10 max-w-xl text-center">
+        Available for Internships & Entry-Level Roles. My inbox is always open.
+      </p>
+      <div className="mx-auto max-w-xl figma-card">{formContent}</div>
+    </PremiumSection>
   );
-};
-
-const inputStyle = {
-  width: '100%',
-  padding: '1rem',
-  background: 'rgba(11, 12, 16, 0.5)',
-  border: '1px solid var(--secondary-color)',
-  borderRadius: '8px',
-  color: 'var(--text-light)',
-  fontFamily: 'inherit',
-  outline: 'none',
-  transition: 'border-color 0.3s ease'
 };
 
 export default Contact;

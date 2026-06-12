@@ -1,110 +1,99 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Database, Terminal } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { downloadResumePdf } from '../utils/downloadResume';
+import PageShell from './ui/PageShell';
 
-const Hero = () => {
-  return (
-    <section className="section" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
-      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap-reverse', gap: '4rem' }}>
-        
-        {/* Text Content */}
-        <div style={{ flex: '1 1 500px', maxWidth: '800px' }}>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            style={{ color: 'var(--primary-color)', fontSize: '1.2rem', marginBottom: '1rem' }}
-          >
-            Hi, my name is
-          </motion.p>
-          
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            style={{ fontSize: 'clamp(40px, 8vw, 80px)', lineHeight: '1.1', marginBottom: '10px' }}
-            className="glow-text"
-          >
-            ASAD KHAN.
-          </motion.h1>
-          
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            style={{ fontSize: 'clamp(30px, 6vw, 60px)', color: 'var(--secondary-color)', lineHeight: '1.1', marginBottom: '20px' }}
-          >
-            I build data-driven insights.
-          </motion.h2>
+const stats = [
+  { value: '2+', label: 'Projects Completed' },
+  { value: 'BS', label: 'Data Science' },
+  { value: 'Excel', label: 'Power BI & SQL' },
+];
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            style={{ fontSize: '1.1rem', maxWidth: '600px', marginBottom: '2rem' }}
-          >
-            I'm a Data Analyst specializing in Data Science, business intelligence, and data visualization. 
-            Currently pursuing BS Data Science and working as a Data Science Intern at Technify.
-          </motion.p>
+const Hero = () => (
+  <PageShell>
+    <div className="grid items-center gap-10 lg:grid-cols-[1fr_auto_1fr] lg:gap-6 xl:gap-10">
+      {/* Left — intro */}
+      <motion.div
+        initial={{ opacity: 0, x: -24 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6 }}
+        className="order-2 text-center lg:order-1 lg:text-left"
+      >
+        <p className="text-sm text-[#888888]">Hello, I&apos;m</p>
+        <h1 className="mt-2 font-display text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
+          Asad Khan
+        </h1>
+        <h2 className="mt-1 text-2xl font-semibold text-[#d4ff00] sm:text-3xl">Data Analyst</h2>
+        <p className="premium-body mx-auto mt-5 max-w-md lg:mx-0">
+          I specialize in Data Science, business intelligence, and data visualization — turning raw data into actionable insights for healthcare and fintech.
+        </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}
+        <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
+          <Link
+            to="/contact"
+            className="inline-flex min-w-[150px] items-center justify-center rounded-full bg-[#d4ff00] px-8 py-3.5 text-sm font-bold text-black shadow-[0_4px_20px_rgba(212,255,0,0.3)] transition-all hover:scale-[1.03]"
           >
-            <Link to="/projects" className="btn-primary btn-solid">
-              <Database size={20} /> View Projects
-            </Link>
-            <Link to="/about" className="btn-primary">
-              <Terminal size={20} /> About Me
-            </Link>
-          </motion.div>
+            Hire Me
+          </Link>
+          <button
+            type="button"
+            onClick={downloadResumePdf}
+            className="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-[#d4ff00]"
+          >
+            Download Resume <ArrowUpRight size={16} className="text-[#d4ff00]" />
+          </button>
         </div>
 
-        {/* Profile Image Container */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center' }}
-        >
-          <div style={{
-            width: '100%',
-            maxWidth: '400px',
-            aspectRatio: '1/1',
-            borderRadius: '20px',
-            background: 'var(--surface-color)',
-            border: '2px solid var(--primary-color)',
-            boxShadow: '0 0 30px rgba(102, 252, 241, 0.2)',
-            overflow: 'hidden',
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <img 
-              src="/profile.png" 
-              alt="Asad Khan" 
-              style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0, zIndex: 10 }}
-              onError={(e) => {
-                e.target.style.display = 'none';
-              }}
-            />
-            {/* Fallback Icon if image is missing */}
-            <div style={{ textAlign: 'center', zIndex: 1, padding: '20px' }}>
-               <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="var(--primary-color)" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-               </svg>
+        <div className="mt-8 flex flex-wrap justify-center gap-3 lg:hidden">
+          {stats.map((s) => (
+            <div key={s.label} className="stat-card min-w-[90px] text-center">
+              <p className="value">{s.value}</p>
+              <p className="label">{s.label}</p>
             </div>
-          </div>
-        </motion.div>
+          ))}
+        </div>
+      </motion.div>
 
-      </div>
-    </section>
-  );
-};
+      {/* Center — profile */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
+        className="order-1 flex justify-center lg:order-2"
+      >
+        <div className="relative w-[220px] py-6 sm:w-[260px] md:w-[280px]">
+          <svg
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[100%] w-[100%] -translate-x-1/2 -translate-y-1/2 text-[#d4ff00]"
+            viewBox="0 0 200 200"
+            fill="none"
+            aria-hidden
+          >
+            <path d="M 138 28 A 72 72 0 1 1 62 172" stroke="currentColor" strokeWidth="18" strokeLinecap="round" />
+          </svg>
+          <div className="relative z-10 mx-auto aspect-square w-[70%] overflow-hidden rounded-full border-[5px] border-[#1a1a1a] bg-[#111]">
+            <img src="/profile.png" alt="Asad Khan" className="h-full w-full object-cover object-[center_20%]" />
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Right — stats (desktop) */}
+      <motion.div
+        initial={{ opacity: 0, x: 24 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="order-3 hidden flex-col gap-4 lg:flex"
+      >
+        {stats.map((s) => (
+          <div key={s.label} className="stat-card w-[160px]">
+            <p className="value">{s.value}</p>
+            <p className="label">{s.label}</p>
+          </div>
+        ))}
+      </motion.div>
+    </div>
+  </PageShell>
+);
 
 export default Hero;

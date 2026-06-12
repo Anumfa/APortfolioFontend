@@ -1,93 +1,54 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Check } from 'lucide-react';
+import { resumeProjects } from '../data/resume';
 
-const DigitalWalletPage = () => {
-  return (
-    <div className="section" style={{ paddingTop: '120px' }}>
-      <div className="container">
-        <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', color: 'var(--text-main)' }}>
-          <ArrowLeft size={20} /> Back to Home
-        </Link>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="glass-panel"
-        >
-          <h1 style={{ color: 'var(--text-light)', fontSize: '2.5rem', marginBottom: '0.5rem' }}>
-            Digital Wallet Analytics Dashboard
-          </h1>
-          <p style={{ color: 'var(--primary-color)', fontSize: '1.2rem', marginBottom: '2rem', fontWeight: 'bold' }}>
-            Fintech Data Analytics | Business Intelligence Dashboard
-          </p>
+const project = resumeProjects[0];
 
-          <div style={{ marginBottom: '2rem' }}>
-            <div style={{
-              width: '100%',
-              borderRadius: '12px',
-              overflow: 'hidden',
-              marginBottom: '2rem',
-              border: '1px solid var(--secondary-color)',
-              backgroundColor: 'var(--surface-color)',
-            }}>
-              <img
-                src="/digital-wallet.png"
-                alt="Digital Wallet Analytics Dashboard"
-                style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'contain' }}
-                onError={(e) => { e.target.style.display = 'none'; }}
-              />
-            </div>
-            
-            <h3 style={{ color: 'var(--text-light)', marginBottom: '1rem' }}>Description</h3>
-            <p style={{ marginBottom: '1rem' }}>
-              Designed and developed an end-to-end Excel dashboard to monitor key fintech KPIs for a digital wallet platform. 
-              The dashboard tracks PKR 24.8M in Gross Merchandise Value across 5,000 transactions with a 95.1% success rate and PKR 4,958 Average Order Value. 
-              Built interactive visualizations including Monthly GMV Trends, Cashback by Merchant analysis for 30+ merchants, and Transaction Success Rate breakdown showing 4,755 successful, 146 failed, and 99 pending transactions.
-            </p>
-            <p>
-              Implemented dynamic slicers for Month and Year filters, enabling leadership to drill down into specific time periods and detect seasonal patterns. 
-              The dashboard identified PKR 724K in potential revenue leakage from failed transactions and provided merchant-level cashback insights to optimize partnership strategies.
-            </p>
-          </div>
+const DigitalWalletPage = () => (
+  <div className="section page-top">
+    <div className="container">
+      <Link to="/projects" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', color: 'var(--text-main)' }}>
+        <ArrowLeft size={18} /> Back to Projects
+      </Link>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-            <div>
-              <h3 style={{ color: 'var(--text-light)', marginBottom: '1rem' }}>Key Features</h3>
-              <ul style={{ listStyle: 'none', padding: 0 }}>
-                {[
-                  "Real-time KPI cards: Total GMV, Transactions, Success Rate, AOV",
-                  "Monthly GMV trend analysis from Aug 2023 to Aug 2024",
-                  "Cashback distribution across 30+ merchants with dynamic filtering",
-                  "Success/Failure/Pending transaction breakdown with donut chart",
-                  "Interactive slicers for date-based analysis"
-                ].map((feature, i) => (
-                  <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                    <CheckCircle size={20} color="var(--primary-color)" style={{ flexShrink: 0, marginTop: '4px' }} />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            
-            <div>
-              <h3 style={{ color: 'var(--text-light)', marginBottom: '1rem' }}>Tools & Technologies</h3>
-              <p style={{ marginBottom: '1.5rem', color: 'var(--secondary-color)', fontWeight: '500' }}>
-                Microsoft Excel, Pivot Tables, XLOOKUP, Slicers, Data Cleaning, Data Visualization, Conditional Formatting, Dashboard Design
-              </p>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-panel">
+        <p style={{ color: 'var(--primary-color)', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          Project Type
+        </p>
+        <h1 style={{ fontSize: 'clamp(1.35rem, 4vw, 2rem)', color: 'var(--text-light)', marginBottom: '0.5rem' }}>{project.title}</h1>
+        <p style={{ color: 'var(--secondary-color)', fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', marginBottom: '2rem', fontWeight: 600 }}>
+          {project.tool}
+        </p>
 
-              <h3 style={{ color: 'var(--text-light)', marginBottom: '1rem' }}>Business Impact</h3>
-              <p>
-                Automated monthly financial reporting, reducing manual effort by 70% while providing real-time visibility into transaction health, merchant performance, and revenue opportunities for fintech operations team.
-              </p>
-            </div>
-          </div>
-        </motion.div>
-      </div>
+        <div style={{ width: '100%', borderRadius: '12px', overflow: 'hidden', marginBottom: '2rem', border: '1px solid var(--secondary-color)', backgroundColor: 'var(--surface-color)' }}>
+          <img src={project.image} alt={project.title} style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'contain' }} />
+        </div>
+
+        <h3 style={{ color: 'var(--text-light)', marginBottom: '1rem' }}>Description</h3>
+        {project.fullDescription.map((para) => (
+          <p key={para} style={{ marginBottom: '1rem', lineHeight: 1.8, fontSize: 'clamp(0.9rem, 2vw, 1rem)' }}>{para}</p>
+        ))}
+
+        <h3 style={{ color: 'var(--text-light)', marginBottom: '1rem', marginTop: '1.5rem' }}>Key Features</h3>
+        <ul style={{ display: 'grid', gap: '0.75rem', marginBottom: '1.5rem' }}>
+          {project.keyFeatures.map((feature) => (
+            <li key={feature} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', fontSize: 'clamp(0.9rem, 2vw, 1rem)' }}>
+              <Check size={18} style={{ color: 'var(--primary-color)', flexShrink: 0, marginTop: '2px' }} />
+              <span>{feature}</span>
+            </li>
+          ))}
+        </ul>
+
+        <h3 style={{ color: 'var(--text-light)', marginBottom: '0.75rem' }}>Tools & Technologies</h3>
+        <p style={{ marginBottom: '1.5rem', lineHeight: 1.7, fontSize: 'clamp(0.9rem, 2vw, 1rem)' }}>{project.toolsTechnologies}</p>
+
+        <h3 style={{ color: 'var(--text-light)', marginBottom: '0.75rem' }}>Business Impact</h3>
+        <p style={{ lineHeight: 1.8, fontSize: 'clamp(0.9rem, 2vw, 1rem)', color: 'var(--primary-color)' }}>{project.businessImpact}</p>
+      </motion.div>
     </div>
-  );
-};
+  </div>
+);
 
 export default DigitalWalletPage;

@@ -1,88 +1,62 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Globe, MessageCircle, Phone } from 'lucide-react';
-import Contact from '../components/Contact'; // The existing form component
+import { Mail, Globe, MessageCircle } from 'lucide-react';
+import { resumeData } from '../data/resume';
 
-const ContactPage = () => {
-  return (
-    <div className="section" style={{ paddingTop: '120px', minHeight: '100vh' }}>
-      <div className="container">
-        <motion.h1 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="section-title"
-        >
-          Contact Me
-        </motion.h1>
-        
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', marginTop: '4rem' }}>
-          
-          {/* Contact Details & Links */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
+const links = [
+  { icon: Mail, label: resumeData.email, href: `mailto:${resumeData.email}` },
+  { icon: Globe, label: resumeData.linkedin, href: resumeData.linkedinUrl },
+  { icon: MessageCircle, label: resumeData.phone, href: 'https://wa.me/923170395740' },
+];
+
+const ContactPage = () => (
+  <div className="section page-top contact-page">
+    <div className="container contact-inner">
+      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="section-header">
+        <h1 className="section-title">Contact Me</h1>
+      </motion.div>
+
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1 }}
+        style={{ marginBottom: '2rem', fontSize: 'clamp(0.95rem, 2.5vw, 1.1rem)', color: 'var(--text-main)', padding: '0 0.5rem' }}
+      >
+        {resumeData.availability}. Feel free to reach out via email, LinkedIn, or WhatsApp.
+      </motion.p>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="contact-links"
+      >
+        {links.map(({ icon: Icon, label, href }) => (
+          <a
+            key={label}
+            href={href}
+            target={href.startsWith('http') ? '_blank' : undefined}
+            rel="noreferrer"
+            className="contact-card"
           >
-            <h3 style={{ fontSize: '2rem', color: 'var(--text-light)', marginBottom: '1.5rem' }}>Let's Connect</h3>
-            <p style={{ marginBottom: '2rem', fontSize: '1.1rem' }}>
-              I am currently available for Internships & Entry-Level Roles. Feel free to reach out via email, WhatsApp, or connect with me on LinkedIn.
-            </p>
+            <div className="icon-wrap"><Icon size={22} /></div>
+            <span>{label}</span>
+          </a>
+        ))}
+      </motion.div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              
-              {/* Email */}
-              <a href="mailto:aasad9736@gmail.com" style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: 'var(--text-main)', fontSize: '1.2rem', textDecoration: 'none' }} className="contact-link">
-                <div style={{ padding: '1rem', background: 'rgba(102, 252, 241, 0.1)', borderRadius: '50%', color: 'var(--primary-color)' }}>
-                  <Mail size={24} />
-                </div>
-                <span>aasad9736@gmail.com</span>
-              </a>
-
-              {/* LinkedIn */}
-              <a href="https://www.linkedin.com/in/data-analyst-asad-khan07" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: 'var(--text-main)', fontSize: '1.2rem', textDecoration: 'none' }} className="contact-link">
-                <div style={{ padding: '1rem', background: 'rgba(102, 252, 241, 0.1)', borderRadius: '50%', color: '#0077b5' }}>
-                  <Globe size={24} />
-                </div>
-                <span>linkedin.com/in/data-analyst-asad-khan07</span>
-              </a>
-
-              {/* WhatsApp */}
-              <a href="https://wa.me/923170395740" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: 'var(--text-main)', fontSize: '1.2rem', textDecoration: 'none' }} className="contact-link">
-                <div style={{ padding: '1rem', background: 'rgba(102, 252, 241, 0.1)', borderRadius: '50%', color: '#25D366' }}>
-                  <MessageCircle size={24} />
-                </div>
-                <span>+92 317 0395740 (WhatsApp)</span>
-              </a>
-
-            </div>
-          </motion.div>
-
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <div style={{ background: 'rgba(31, 40, 51, 0.6)', padding: '2rem', borderRadius: '12px', border: '1px solid rgba(102, 252, 241, 0.1)' }}>
-              <h3 style={{ fontSize: '1.5rem', color: 'var(--text-light)', marginBottom: '1.5rem', textAlign: 'center' }}>Send a Message</h3>
-              {/* Reuse the existing Contact form component logic, but we modify Contact.jsx to just be the form without section wrappers */}
-              <Contact isFormOnly={true} />
-            </div>
-          </motion.div>
-
-        </div>
-      </div>
-      <style>{`
-        .contact-link:hover {
-          color: var(--primary-color) !important;
-          transform: translateX(5px);
-        }
-        .contact-link {
-          transition: all 0.3s ease;
-        }
-      `}</style>
+      <motion.a
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.35 }}
+        href={`mailto:${resumeData.email}`}
+        className="btn-primary btn-solid"
+        style={{ marginTop: '2rem', display: 'inline-flex' }}
+      >
+        Hire Me
+      </motion.a>
     </div>
-  );
-};
+  </div>
+);
 
 export default ContactPage;
