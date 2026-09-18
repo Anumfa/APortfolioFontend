@@ -20,6 +20,23 @@ const ExperiencePage = () => (
                 <li key={p} style={{ marginBottom: '0.35rem' }}>{p}</li>
               ))}
             </ul>
+            <button
+              type="button"
+              onClick={() => window.open('/certificate.jpeg', '_blank', 'noopener,noreferrer')}
+              style={{
+                marginTop: '1rem',
+                background: 'var(--primary-color)',
+                color: '#111',
+                border: 'none',
+                borderRadius: '999px',
+                padding: '0.8rem 1.4rem',
+                fontWeight: '700',
+                cursor: 'pointer',
+                transition: 'transform 0.2s ease',
+              }}
+            >
+              View Certificate
+            </button>
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass-panel">

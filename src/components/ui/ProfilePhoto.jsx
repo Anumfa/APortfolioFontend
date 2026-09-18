@@ -24,7 +24,7 @@ const ProfilePhoto = ({ className = '', size = 'lg' }) => {
         <div className="rounded-2xl bg-gradient-to-br from-violet-500/60 via-blue-500/40 to-cyan-400/50 p-[2px]">
           <div className="relative aspect-[3/4] overflow-hidden rounded-[14px] bg-[#0a0a1a]">
             <img
-              src="/profile.png"
+              src="/asad.jpeg"
               alt="Asad Khan"
               className="h-full w-full object-cover object-[center_15%] brightness-[1.05] contrast-[1.08] saturate-[1.05]"
               onError={(e) => { e.target.style.display = 'none'; }}
